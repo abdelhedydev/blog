@@ -1,11 +1,12 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import PropTypes from 'prop-types';
 import GET_POST from '../querries/GetPost';
 import PostForm from './PostForm';
 import PostWrapper from './PostWrapper';
+import EditPost from '../mutations/EditPost';
 import Switch from './Switch';
 
 const Post = ({ match, className }) => (
@@ -21,8 +22,21 @@ const Post = ({ match, className }) => (
               <Switch edit={isEditMode} />
               {
                 isEditMode
-                  ? <PostForm postTitle={post.title} postBody={post.body} />
-                  : (
+                  ? (
+                    <Mutation mutation={EditPost}>
+                      {
+                        updatePost => (
+                          <PostForm
+                            postTitle={post.title}
+                            id={post.id}
+                            postBody={post.body}
+                            updatePost={updatePost}
+                            isEditMode
+                          />
+                        )
+                      }
+                    </Mutation>
+                  ) : (
                     <div className="post">
                       <pre>{post.id}</pre>
                       <p className="post-title">{post.title}</p>
