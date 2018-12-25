@@ -1,34 +1,31 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import { map } from 'lodash';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
+import GET_POST from '../querries/GetPost';
+import PostForm from './PostForm';
 
-const GET_POST = gql`
-query post($id: ID!){
-   post(where : { id: $id }) {
-    id
-    body
-    title
-  }
-}
-`;
-
-const Post = ({ match }) => (
-  <Query query={GET_POST} variables={{ id: match.params.id }}>
-    {
-      ({ error, data, loading }) => {
-        if (loading) return <p>loading</p>;
-        if (error) return <p>error</p>;
-        return map(data, (post, key) => <p key={key}>{post.title}</p>);
+const Post = ({ match, className }) => (
+  <div className={className}>
+    <Query query={GET_POST} variables={{ id: match.params.id }}>
+      {
+        ({ error, data, loading }) => {
+          if (loading) return <p>loading</p>;
+          if (error) return <p>error</p>;
+          return map(data, (post, key) => (
+            <div key={key}>
+              <PostForm postTitle={post.title} postBody={post.body} />
+            </div>
+          ));
+        }
       }
-    }
-  </Query>
+    </Query>
+  </div>
 );
 Post.propTypes = {
-  match: PropTypes.object,
+  // eslint-disable-next-line react/forbid-prop-types
+  match: PropTypes.object.isRequired,
+  className: PropTypes.string.isRequired,
 };
 
 export default Post;

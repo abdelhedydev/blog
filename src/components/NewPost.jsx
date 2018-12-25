@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
+import PostForm from './PostForm';
 import ADD_POST from '../mutations/AddPost';
 
 const NewPost = () => (
@@ -9,23 +10,7 @@ const NewPost = () => (
   >
     {(createPost, { data }) => (
       !data ? (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const { title, body } = e.target;
-            createPost({ variables: { title: title.value, body: body.value } });
-          }}
-        >
-          <div>
-            <p>Your Title heare</p>
-            <input type="text" placeholder="tilte" name="title" />
-          </div>
-          <div>
-            <p>Your Article heare</p>
-            <textarea type="text" placeholder="tilte" name="body" />
-          </div>
-          <button type="submit">Add Todo</button>
-        </form>
+        <PostForm createPost={createPost} />
       )
         : (
           <Redirect to="/" />

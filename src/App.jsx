@@ -2,9 +2,9 @@ import React from 'react';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
 import {
-  BrowserRouter as Router, Route, Switch, Link,
+  BrowserRouter as Router, Route, Switch,
 } from 'react-router-dom';
-
+import Header from './components/Header';
 import Posts from './components/Posts';
 import Post from './components/Post';
 import NewPost from './components/NewPost';
@@ -17,9 +17,7 @@ const App = () => (
   <ApolloProvider client={client}>
     <Router>
       <div>
-        <header>
-          <Link to="/"><pre>||||GraphQL is Cool||||</pre></Link>
-        </header>
+        <Header />
         <Switch>
           <Route component={Posts} exact path="/" />
           <Route component={NewPost} exact path="/post/new" />

@@ -2,33 +2,41 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
+import PropTypes from 'prop-types';
 import { map } from 'lodash';
-import gql from 'graphql-tag';
+import PostsWrapper from './PostsWrapper';
+import GET_POSTS from '../querries/Getposts';
+import Button from './Button';
 
-const GET_POST = gql`
-{
-    posts{
-    id
-    title
-    body
-  }
-}
-    `;
-const Posts = () => (
-  <div>
-    <Link to="/post/new"><p>New Post ?</p></Link>
-    <hr />
-    <Query query={GET_POST}>
-      {
-        ({ loading, data, error }) => {
-          if (loading) return <p> loading ... </p>;
-          if (error) return <p>Eroor </p>;
-          const { posts } = data;
-          return map(posts, post => <Link to={`/post/${post.id}`}><p>{post.title}</p></Link>);
+const Posts = ({ className }) => (
+  <div className={className}>
+    <Link to="/post/new">
+      <div className="post-button-new">
+        <Button color="#25CCF7" title="New Post ?" />
+      </div>
+    </Link>
+    <div className="posts">
+      <Query query={GET_POSTS}>
+        {
+          ({ loading, data, error }) => {
+            if (loading) return <p> loading ... </p>;
+            if (error) return <p>Eroor </p>;
+            const { posts } = data;
+            return map(posts, (post, key) => (
+              <div key={key} className="post">
+                <Link to={`/post/${post.id}`}>
+                  <p className="post-title">{post.title}</p>
+                  <p className="post-body">{post.body}</p>
+                </Link>
+              </div>
+            ));
+          }
         }
-      }
-    </Query>
+      </Query>
+    </div>
   </div>
 );
-
-export default Posts;
+Posts.propTypes = {
+  className: PropTypes.string.isRequired,
+};
+export default PostsWrapper(Posts);
