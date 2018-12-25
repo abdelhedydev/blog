@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 const GET_POST = gql`
-{
-    posts{
+query allPosts($skip:Int){
+    posts(orderBy:createdAt_DESC,first:2,skip:$skip){
     id
     title
     body

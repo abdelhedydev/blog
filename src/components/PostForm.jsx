@@ -32,8 +32,8 @@ const PostForm = ({
   </form>
 );
 PostForm.propTypes = {
-  createPost: PropTypes.func.isRequired,
-  updatePost: PropTypes.func.isRequired,
+  createPost: PropTypes.func,
+  updatePost: PropTypes.func,
   className: PropTypes.string.isRequired,
   // eslint-disable-next-line react/no-unused-prop-types
   postTitle: PropTypes.string,

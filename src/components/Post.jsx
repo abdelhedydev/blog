@@ -9,13 +9,13 @@ import PostWrapper from './PostWrapper';
 import EditPost from '../mutations/EditPost';
 import Switch from './Switch';
 
+
 const Post = ({ match, className }) => (
   <div className={className}>
     <Query query={GET_POST} variables={{ id: match.params.id }}>
       {
-        ({ error, data, loading }) => {
+        ({ data, loading }) => {
           if (loading) return <p>loading</p>;
-          if (error) console.log('error', error);
           const { post, isEditMode } = data;
           return (
             <div>
@@ -25,12 +25,14 @@ const Post = ({ match, className }) => (
                   ? (
                     <Mutation mutation={EditPost}>
                       {
-                        updatePost => (
+                        // eslint-disable-next-line no-unused-vars
+                        (updatePost, result) => (
                           <PostForm
                             postTitle={post.title}
                             id={post.id}
                             postBody={post.body}
                             updatePost={updatePost}
+                            results={result}
                             isEditMode
                           />
                         )
