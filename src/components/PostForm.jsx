@@ -16,11 +16,11 @@ const PostForm = ({
     >
       <div>
         <p>Your Title heare</p>
-        <input type="text" placeholder="tilte" name="title" value={postTitle} />
+        <input type="text" placeholder="tilte" name="title" defaultValue={postTitle} />
       </div>
       <div>
         <p>Your Article heare</p>
-        <textarea type="text" placeholder="tilte" name="body" value={postBody} />
+        <textarea type="text" placeholder="tilte" name="body" defaultValue={postBody} />
       </div>
       <Button type="submit" color="#55E6C1" title="Submit" />
     </form>

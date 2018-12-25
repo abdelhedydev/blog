@@ -7,6 +7,7 @@ query post($id: ID!){
     body
     title
   }
+  isEditMode @client
 }
 `;
 export default GET_POST;

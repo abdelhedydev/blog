@@ -26,7 +26,6 @@ const Posts = ({ className }) => (
               <div key={key} className="post">
                 <Link to={`/post/${post.id}`}>
                   <p className="post-title">{post.title}</p>
-                  <p className="post-body">{post.body}</p>
                 </Link>
               </div>
             ));

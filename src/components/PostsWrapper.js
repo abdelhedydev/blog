@@ -13,13 +13,14 @@ const PostsWrapper = WrappedComponent => styled(WrappedComponent)`
     border:1px solid #2C3A47;
     width : 80%;
     margin-bottom:15px;
+    padding:10px;
     transition:.2s all;
     &:hover{
       background-color: #CAD3C8;
     }
     &-title{
       font-size:24px;
-      color: #58B19F;
+      color: #2C3A47;
     }
     &-body{
       font-size:20px;

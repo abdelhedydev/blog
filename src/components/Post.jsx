@@ -1,9 +1,12 @@
+/* eslint-disable jsx-a11y/label-has-for */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
-import { map } from 'lodash';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import GET_POST from '../querries/GetPost';
 import PostForm from './PostForm';
+import PostWrapper from './PostWrapper';
+import Switch from './Switch';
 
 const Post = ({ match, className }) => (
   <div className={className}>
@@ -11,12 +14,23 @@ const Post = ({ match, className }) => (
       {
         ({ error, data, loading }) => {
           if (loading) return <p>loading</p>;
-          if (error) return <p>error</p>;
-          return map(data, (post, key) => (
-            <div key={key}>
-              <PostForm postTitle={post.title} postBody={post.body} />
+          if (error) console.log('error', error);
+          const { post, isEditMode } = data;
+          return (
+            <div>
+              <Switch edit={isEditMode} />
+              {
+                isEditMode
+                  ? <PostForm postTitle={post.title} postBody={post.body} />
+                  : (
+                    <div className="post">
+                      <pre>{post.id}</pre>
+                      <p className="post-title">{post.title}</p>
+                      <p className="post-body">{post.body}</p>
+                    </div>
+                  )}
             </div>
-          ));
+          );
         }
       }
     </Query>
@@ -28,4 +42,4 @@ Post.propTypes = {
   className: PropTypes.string.isRequired,
 };
 
-export default Post;
+export default PostWrapper(Post);
