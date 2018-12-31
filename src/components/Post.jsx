@@ -10,6 +10,7 @@ import PostWrapper from './PostWrapper';
 import EditPost from '../mutations/EditPost';
 import Switch from './Switch';
 
+
 const EDIT_POST_CHECK = gql`
   mutation updatePost($check:Boolean ,$id:ID!) {
    updatePost(data: {check: $check},where: { id: $id }) {
@@ -37,15 +38,16 @@ const Post = ({ match, className }) => (
               {
                 isEditMode
                   ? (
-                    <Mutation mutation={EditPost}>
+                    <Mutation
+                      mutation={EditPost}
+                    >
                       {
-                        (updatePost, result) => (
+                        updatePost => (
                           <PostForm
                             postTitle={post.title}
                             id={post.id}
                             postBody={post.body}
                             updatePost={updatePost}
-                            results={result}
                             isEditMode
                           />
                         )

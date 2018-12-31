@@ -7,7 +7,6 @@ import Button from './Button';
 const PostForm = ({
   createPost, className, postTitle, postBody, updatePost, isEditMode, id,
 }) => (
-
   <form
     className={className}
     onSubmit={(e) => {
@@ -42,6 +41,7 @@ PostForm.propTypes = {
   // eslint-disable-next-line react/no-unused-prop-types
   isEditMode: PropTypes.bool,
   id: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
 
 };
 export default PostFormWrapper(PostForm);
