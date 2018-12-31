@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import GET_POST from '../querries/GetPost';
 import PostForm from './PostForm';
@@ -9,6 +10,13 @@ import PostWrapper from './PostWrapper';
 import EditPost from '../mutations/EditPost';
 import Switch from './Switch';
 
+const EDIT_POST_CHECK = gql`
+  mutation updatePost($check:Boolean ,$id:ID!) {
+   updatePost(data: {check: $check},where: { id: $id }) {
+    check
+  }
+  }
+`;
 
 const Post = ({ match, className }) => (
   <div className={className}>
@@ -25,7 +33,6 @@ const Post = ({ match, className }) => (
                   ? (
                     <Mutation mutation={EditPost}>
                       {
-                        // eslint-disable-next-line no-unused-vars
                         (updatePost, result) => (
                           <PostForm
                             postTitle={post.title}
@@ -43,6 +50,47 @@ const Post = ({ match, className }) => (
                       <pre>{post.id}</pre>
                       <p className="post-title">{post.title}</p>
                       <p className="post-body">{post.body}</p>
+                      <Mutation
+                        mutation={EDIT_POST_CHECK}
+                        variables={{
+                          id: post.id,
+                          check: !post.check,
+                        }}
+                        optimisticResponse={{
+                          __typename: 'Mutation',
+                          updataPost: {
+                            __typename: 'Post',
+                            check: !post.check,
+                          },
+                        }}
+                        update={(cache, { data: { updataPost } }) => {
+                          const oldData = cache.readQuery({
+                            query: GET_POST,
+                            variables: { id: post.id },
+                          });
+                          console.log('updaPost', updataPost);
+                          oldData.post.check = updataPost.check;
+                          cache.writeQuery({
+                            query: GET_POST,
+                            data: {
+                              ...data,
+                              post: oldData.post,
+                            },
+                          });
+                        }
+                        }
+                      >
+                        {
+                          updatePost => (
+                            <input
+                              type="checkbox"
+                              checked={post.check}
+                              onChange={updatePost}
+                              style={{ height: '50px', width: '55px' }}
+                            />
+                          )
+                        }
+                      </Mutation>
                     </div>
                   )}
             </div>

@@ -6,6 +6,7 @@ query post($id: ID!){
     id
     body
     title
+    check
   }
   isEditMode @client
 }
