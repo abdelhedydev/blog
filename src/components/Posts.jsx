@@ -6,9 +6,11 @@ import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { map } from 'lodash';
+import InfiniteScroll from 'react-infinite-scroller';
 import PostsWrapper from './PostsWrapper';
 import GET_POSTS from '../querries/Getposts';
 import Button from './Button';
+
 
 const Posts = ({ className }) => (
   <div className={className}>
@@ -27,18 +29,10 @@ const Posts = ({ className }) => (
             if (error) return <p>Eroor </p>;
             const { posts } = data;
             return (
-              <React.Fragment>
-                {
-                  map(posts, (post, key) => (
-                    <div key={key} className="post">
-                      <Link to={`/post/${post.id}`}>
-                        <p className="post-title">{post.title}</p>
-                      </Link>
-                    </div>
-                  ))
-                }
-                <button
-                  onClick={() => fetchMore({
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={() => {
+                  fetchMore({
                     variables: {
                       skip: posts.length,
                     },
@@ -48,12 +42,22 @@ const Posts = ({ className }) => (
                         posts: [...prev.posts, ...fetchMoreResult.posts],
                       });
                     },
-                  })}
-                  type="submit"
-                >
-                  Load More
-                </button>
-              </React.Fragment>
+                  });
+                }
+                }
+                hasMore
+                loader={<div className="loader" key={0}>Loading ...</div>}
+              >
+                {
+                  map(posts, (post, key) => (
+                    <div key={key} className="post">
+                      <Link to={`/post/${post.id}`}>
+                        <p className="post-title">{post.title}</p>
+                      </Link>
+                    </div>
+                  ))
+                }
+              </InfiniteScroll>
             );
           }
         }

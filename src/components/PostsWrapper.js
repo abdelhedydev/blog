@@ -15,6 +15,8 @@ const PostsWrapper = WrappedComponent => styled(WrappedComponent)`
     margin-bottom:15px;
     padding:10px;
     transition:.2s all;
+    height:340px;
+    cursor:pointer;
     &:hover{
       background-color: #CAD3C8;
     }
