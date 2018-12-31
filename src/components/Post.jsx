@@ -4,10 +4,10 @@ import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
-import GET_POST from '../querries/GetPost';
+import GET_POST from '../querries/GetPost.graphql';
 import PostForm from './PostForm';
 import PostWrapper from './PostWrapper';
-import EditPost from '../mutations/EditPost';
+import EditPost from '../mutations/EditPost.graphql';
 import Switch from './Switch';
 
 

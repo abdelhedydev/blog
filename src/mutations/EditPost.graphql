@@ -1,0 +1,7 @@
+mutation updatePost($title: String!,$body:String!,$id:ID!){
+  updatePost(data: {title: $title, body: $body},where: { id: $id }){
+    id
+    title
+    body
+  }
+}

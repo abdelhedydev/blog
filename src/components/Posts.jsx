@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { map } from 'lodash';
 import InfiniteScroll from 'react-infinite-scroller';
 import PostsWrapper from './PostsWrapper';
-import GET_POSTS from '../querries/Getposts';
+import GET_POSTS from '../querries/Getposts.graphql';
 import Button from './Button';
 
 
