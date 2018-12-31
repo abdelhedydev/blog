@@ -7,6 +7,7 @@ query post($id: ID!){
     body
     title
     check
+    likes
   }
   isEditMode @client
 }

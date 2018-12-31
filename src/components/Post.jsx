@@ -17,7 +17,13 @@ const EDIT_POST_CHECK = gql`
   }
   }
 `;
-
+const EDIT_POST_LIKES = gql`
+  mutation updatePost($likes:Int ,$id:ID!) {
+   updatePost(data: {likes: $likes},where: { id: $id }) {
+    likes
+  }
+  }
+`;
 const Post = ({ match, className }) => (
   <div className={className}>
     <Query query={GET_POST} variables={{ id: match.params.id }}>
@@ -58,18 +64,17 @@ const Post = ({ match, className }) => (
                         }}
                         optimisticResponse={{
                           __typename: 'Mutation',
-                          updataPost: {
+                          updatePost: {
                             __typename: 'Post',
                             check: !post.check,
                           },
                         }}
-                        update={(cache, { data: { updataPost } }) => {
+                        update={(cache, { data: { updatePost } }) => {
                           const oldData = cache.readQuery({
                             query: GET_POST,
                             variables: { id: post.id },
                           });
-                          console.log('updaPost', updataPost);
-                          oldData.post.check = updataPost.check;
+                          oldData.post.check = updatePost.check;
                           cache.writeQuery({
                             query: GET_POST,
                             data: {
@@ -91,6 +96,83 @@ const Post = ({ match, className }) => (
                           )
                         }
                       </Mutation>
+                      <div>
+                        <Mutation
+                          mutation={EDIT_POST_LIKES}
+                          variables={{
+                            id: post.id,
+                            likes: post.likes + 1,
+                          }
+                          }
+                          optimisticResponse={{
+                            __typename: 'Mutation',
+                            updatePost: {
+                              __typename: 'Post',
+                              likes: post.likes + 1,
+                            },
+                          }}
+                          update={(cache, { data: { updatePost } }) => {
+                            const oldData = cache.readQuery({
+                              query: GET_POST,
+                              variables: { id: post.id },
+                            });
+                            oldData.post.likes = updatePost.likes;
+                            cache.writeData({
+                              query: GET_POST,
+                              data: {
+                                ...data,
+                                post: oldData.post,
+                              },
+                            });
+                          }
+
+                          }
+                        >
+                          {
+                            updatePost => (
+                              <button type="button" onClick={updatePost}>++++</button>
+                            )
+                          }
+                        </Mutation>
+                        <div style={{ height: '50px', border: '1px solid blue' }}>{post.likes}</div>
+                        <Mutation
+                          mutation={EDIT_POST_LIKES}
+                          variables={{
+                            id: post.id,
+                            likes: post.likes - 1,
+                          }
+                          }
+                          optimisticResponse={{
+                            __typename: 'Mutation',
+                            updatePost: {
+                              __typename: 'Post',
+                              likes: post.likes - 1,
+                            },
+                          }}
+                          update={(cache, { data: { updatePost } }) => {
+                            const oldData = cache.readQuery({
+                              query: GET_POST,
+                              variables: { id: post.id },
+                            });
+                            oldData.post.likes = updatePost.likes;
+                            cache.writeData({
+                              query: GET_POST,
+                              data: {
+                                ...data,
+                                post: oldData.post,
+                              },
+                            });
+                          }
+
+                          }
+                        >
+                          {
+                            updatePost => (
+                              <button type="button" onClick={updatePost}>----</button>
+                            )
+                          }
+                        </Mutation>
+                      </div>
                     </div>
                   )}
             </div>
