@@ -53,7 +53,6 @@ const Post = ({ match, className }) => (
                     </Mutation>
                   ) : (
                     <div className="post">
-                      <pre>{post.id}</pre>
                       <p className="post-title">{post.title}</p>
                       <p className="post-body">{post.body}</p>
                       <Mutation
@@ -87,16 +86,19 @@ const Post = ({ match, className }) => (
                       >
                         {
                           updatePost => (
-                            <input
-                              type="checkbox"
-                              checked={post.check}
-                              onChange={updatePost}
-                              style={{ height: '50px', width: '55px' }}
-                            />
+                            <div className="read">
+                              <label htmlFor="checkbox">I have Read This Article</label>
+                              <input
+                                type="checkbox"
+                                id="checkbox"
+                                checked={post.check || 0}
+                                onChange={updatePost}
+                              />
+                            </div>
                           )
                         }
                       </Mutation>
-                      <div>
+                      <div className="likes">
                         <Mutation
                           mutation={EDIT_POST_LIKES}
                           variables={{
@@ -130,11 +132,11 @@ const Post = ({ match, className }) => (
                         >
                           {
                             updatePost => (
-                              <button type="button" onClick={updatePost}>++++</button>
+                              <button type="button" className="likes-add btn" onClick={updatePost} />
                             )
                           }
                         </Mutation>
-                        <div style={{ height: '50px', border: '1px solid blue' }}>{post.likes}</div>
+                        <div className="likes-number">{post.likes}</div>
                         <Mutation
                           mutation={EDIT_POST_LIKES}
                           variables={{
@@ -168,7 +170,7 @@ const Post = ({ match, className }) => (
                         >
                           {
                             updatePost => (
-                              <button type="button" onClick={updatePost}>----</button>
+                              <button type="button" className="likes-del btn" onClick={updatePost} />
                             )
                           }
                         </Mutation>
